@@ -253,7 +253,10 @@ export default function Locations({ selectedCityId, onNavigate }) {
             {cities.map((city) => (
               <div
                 key={city.id}
-                onClick={() => setSelectedCity(city)}
+                onClick={() => {
+                  setSelectedCity(city);
+                  loadAttractions(city.id);
+                }}
                 className="bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transform hover:scale-105 transition group"
               >
                 <div className="h-56 bg-gradient-to-br from-blue-400 to-cyan-500 relative overflow-hidden">
