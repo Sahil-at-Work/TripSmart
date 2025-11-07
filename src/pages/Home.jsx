@@ -89,7 +89,17 @@ export default function Home({ onNavigate }) {
             </div>
           ) : cities.length === 0 ? (
             <div className="text-center py-12 bg-white rounded-2xl shadow-md">
-              <p className="text-gray-600 text-lg">No destinations available yet</p>
+              <MapPin size={48} className="text-blue-600 mx-auto mb-4" />
+              <p className="text-gray-800 text-xl font-semibold mb-2">Ready to explore the world?</p>
+              <p className="text-gray-600 text-lg mb-6">Sign up to start planning your trip, buddy!</p>
+              {!user && (
+                <button
+                  onClick={() => onNavigate('locations')}
+                  className="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition"
+                >
+                  Get Started
+                </button>
+              )}
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
