@@ -42,6 +42,25 @@ export function AuthProvider({ children }) {
 
     if (!error && data) {
       setProfile(data);
+    } else if (!data) {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: newProfile, error: insertError } = await supabase
+          .from('profiles')
+          .insert([
+            {
+              id: userId,
+              email: user.email,
+              name: user.email.split('@')[0],
+            },
+          ])
+          .select()
+          .maybeSingle();
+
+        if (!insertError && newProfile) {
+          setProfile(newProfile);
+        }
+      }
     }
     setLoading(false);
   }

@@ -131,6 +131,8 @@ export default function ItineraryPlanner() {
     setSaving(true);
 
     try {
+      console.log('Saving itinerary for user:', user.id);
+
       const { data: itinerary, error: itineraryError } = await supabase
         .from('itineraries')
         .insert([
@@ -145,7 +147,12 @@ export default function ItineraryPlanner() {
         .select()
         .single();
 
-      if (itineraryError) throw itineraryError;
+      if (itineraryError) {
+        console.error('Error saving itinerary:', itineraryError);
+        throw itineraryError;
+      }
+
+      console.log('Itinerary saved:', itinerary);
 
       const items = selectedAttractions.map(sa => ({
         itinerary_id: itinerary.id,
@@ -158,8 +165,12 @@ export default function ItineraryPlanner() {
         .from('itinerary_items')
         .insert(items);
 
-      if (itemsError) throw itemsError;
+      if (itemsError) {
+        console.error('Error saving itinerary items:', itemsError);
+        throw itemsError;
+      }
 
+      console.log('Itinerary items saved successfully');
       alert('Itinerary saved successfully!');
 
       setSelectedCity(null);
@@ -169,7 +180,8 @@ export default function ItineraryPlanner() {
       setEndDate('');
       setAttractions([]);
     } catch (error) {
-      alert('Error saving itinerary: ' + error.message);
+      console.error('Save itinerary error:', error);
+      alert('Error saving itinerary: ' + (error.message || 'Unknown error. Please check the console for details.'));
     } finally {
       setSaving(false);
     }
